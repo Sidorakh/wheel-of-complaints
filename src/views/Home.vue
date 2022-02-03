@@ -26,6 +26,11 @@
                 <div> {{complaint.reason}} </div>
             </v-col>
         </v-row>
+        <v-row>
+            <v-col align="center">
+                <v-btn @click="spin_entities();spin_problems();spin_reasons();"> Spin all! </v-btn>
+            </v-col>
+        </v-row>
         <div v-if="show_complaint" align="center" class="text-h2 px-4">
             {{complaint_text}}
             <v-tooltip top>

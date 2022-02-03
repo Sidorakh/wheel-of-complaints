@@ -1,5 +1,7 @@
 import { TweenMax } from 'gsap'
 
+const wheels = {};
+
 export class Winwheel {
 	constructor(options, drawWheel) {
 		var defaultOptions = {
@@ -51,7 +53,7 @@ export class Winwheel {
 				}
 			}
 		}
-
+		
 		// ------------------------------------------
 		// If the id of the canvas is set, try to get the canvas as we need it for drawing.
 		if (this.canvasId) {
@@ -89,6 +91,7 @@ export class Winwheel {
 			this.cavnas = null
 			this.ctx = null
 		}
+
 
 		// ------------------------------------------
 		// Add array of segments to the wheel, then populate with segments if number of segments is specified for this object.
@@ -186,6 +189,7 @@ export class Winwheel {
 				}
 			}
 		}
+		wheels[this.canvasId] = this;
 	}
 
 	// ====================================================================================================================
@@ -1616,8 +1620,8 @@ export class Winwheel {
 			properties['yoyo'] = this.animation.yoyo // Set others.
 			properties['repeat'] = this.animation.repeat
 			properties['ease'] = this.animation.easing
-			properties['onUpdate'] = winwheelAnimationLoop // Call function to re-draw the canvas.
-			properties['onComplete'] = winwheelStopAnimation // Call function to perform actions when animation has finished.
+			properties['onUpdate'] = ()=>{winwheelAnimationLoop(this.canvasId)} // Call function to re-draw the canvas.
+			properties['onComplete'] = (ccb)=>{winwheelStopAnimation(this.canvasId,ccb)} // Call function to perform actions when animation has finished.
 
 			// Do the tween animation passing the properties from the animation object as an array of key => value pairs.
 			// Keep reference to the tween object in the wheel as that allows pausing, resuming, and stopping while the animation is still running.
@@ -1632,12 +1636,10 @@ export class Winwheel {
 		// @TODO as part of multiwheel, need to work out how to stop the tween for a single wheel but allow others to continue.
 
 		// We can kill the animation using our tween object.
-		if (winwheelToDrawDuringAnimation) {
-			winwheelToDrawDuringAnimation.tween.kill()
+		this.tween.kill()
 
-			// Call the callback function.
-			winwheelStopAnimation(canCallback)
-		}
+		// Call the callback function.
+		winwheelStopAnimation(this.canvasId,canCallback)
 
 		// Ensure the winwheelToDrawDuringAnimation is set to this class.
 		winwheelToDrawDuringAnimation = this
@@ -1949,22 +1951,22 @@ export class Segment {
 	// ====================================================================================================================
 	// Changes an image for a segment by setting a callback to render the wheel once the image has loaded.
 	// ====================================================================================================================
-	changeImage(image, imageDirection) {
-		// Change image name, blank image data.
-		this.image = image
-		this.imgData = null
+	// changeImage(image, imageDirection) {
+	// 	// Change image name, blank image data.
+	// 	this.image = image
+	// 	this.imgData = null
 
-		// Set direction.
-		if (imageDirection) {
-			this.imageDirection = imageDirection
-		}
+	// 	// Set direction.
+	// 	if (imageDirection) {
+	// 		this.imageDirection = imageDirection
+	// 	}
 
-		// Set imgData to a new image object, change set callback and change src (just like in wheel constructor).
-		winwheelAlreadyDrawn = false
-		this.imgData = new Image()
-		this.imgData.onload = winwheelLoadedImage
-		this.imgData.src = this.image
-	}
+	// 	// Set imgData to a new image object, change set callback and change src (just like in wheel constructor).
+	// 	winwheelAlreadyDrawn = false
+	// 	this.imgData = new Image()
+	// 	this.imgData.onload = winwheelLoadedImage
+	// 	this.imgData.src = this.image
+	// }
 }
 
 // ====================================================================================================================
@@ -2009,15 +2011,15 @@ function winwheelPercentToDegrees(percentValue) {
 // In order for the wheel to be re-drawn during the spin animation the function greesock calls needs to be outside
 // of the class as for some reason it errors if try to call winwheel.draw() directly.
 // ====================================================================================================================
-function winwheelAnimationLoop() {
+function winwheelAnimationLoop(id) {
 	if (winwheelToDrawDuringAnimation) {
 		// Check if the clearTheCanvas is specified for this animation, if not or it is not false then clear the canvas.
-		if (winwheelToDrawDuringAnimation.animation.clearTheCanvas != false) {
-			winwheelToDrawDuringAnimation.ctx.clearRect(
+		if (wheels[id].animation.clearTheCanvas != false) {
+			wheels[id].ctx.clearRect(
 				0,
 				0,
-				winwheelToDrawDuringAnimation.canvas.width,
-				winwheelToDrawDuringAnimation.canvas.height
+				wheels[id].canvas.width,
+				wheels[id].canvas.height
 			)
 		}
 
@@ -2035,7 +2037,7 @@ function winwheelAnimationLoop() {
 		}
 
 		// Call code to draw the wheel, pass in false as we never want it to clear the canvas as that would wipe anything drawn in the callbackBefore.
-		winwheelToDrawDuringAnimation.draw(false)
+		wheels[id].draw(false)
 
 		// If there is a callback function which is supposed to be called after the wheel has been drawn then do that.
 		if (callbackAfter != null) {
@@ -2049,8 +2051,8 @@ function winwheelAnimationLoop() {
 
 		// If there is a sound callback then call a function which figures out if the sound should be triggered
 		// and if so then call the function specified by the developer.
-		if (winwheelToDrawDuringAnimation.animation.callbackSound) {
-			winwheelTriggerSound()
+		if (wheels[id].animation.callbackSound) {
+			winwheelTriggerSound(id)
 		}
 	}
 }
@@ -2061,25 +2063,25 @@ function winwheelAnimationLoop() {
 // ====================================================================================================================
 function winwheelTriggerSound() {
 	// If this property does not exist then add it as a property of the winwheel.
-	if (winwheelToDrawDuringAnimation.hasOwnProperty('_lastSoundTriggerNumber') == false) {
-		winwheelToDrawDuringAnimation._lastSoundTriggerNumber = 0
+	if (wheels[id].hasOwnProperty('_lastSoundTriggerNumber') == false) {
+		wheels[id]._lastSoundTriggerNumber = 0
 	}
 
-	var callbackSound = winwheelToDrawDuringAnimation.animation.callbackSound
+	var callbackSound = wheels[id].animation.callbackSound
 	var currentTriggerNumber = 0
 
 	// Now figure out if the sound callback should be called depending on the sound trigger type.
-	if (winwheelToDrawDuringAnimation.animation.soundTrigger == 'pin') {
+	if (wheels[id].animation.soundTrigger == 'pin') {
 		// So for the pin type we need to work out which pin we are between.
-		currentTriggerNumber = winwheelToDrawDuringAnimation.getCurrentPinNumber()
+		currentTriggerNumber = wheels[id].getCurrentPinNumber()
 	} else {
 		// Check on the change of segment by working out which segment we are in.
 		// We can utilise the existing getIndiatedSegmentNumber function.
-		currentTriggerNumber = winwheelToDrawDuringAnimation.getIndicatedSegmentNumber()
+		currentTriggerNumber = wheels[id].getIndicatedSegmentNumber()
 	}
 
 	// If the current number is not the same as last time then call the sound callback.
-	if (currentTriggerNumber != winwheelToDrawDuringAnimation._lastSoundTriggerNumber) {
+	if (currentTriggerNumber != wheels[id]._lastSoundTriggerNumber) {
 		// If the property is a function then call it, otherwise eval the proptery as javascript code.
 		if (typeof callbackSound === 'function') {
 			callbackSound()
@@ -2088,7 +2090,7 @@ function winwheelTriggerSound() {
 		}
 
 		// Also update the last sound trigger with the current number.
-		winwheelToDrawDuringAnimation._lastSoundTriggerNumber = currentTriggerNumber
+		wheels[id]._lastSoundTriggerNumber = currentTriggerNumber
 	}
 }
 
@@ -2097,17 +2099,17 @@ function winwheelTriggerSound() {
 // ====================================================================================================================
 var winwheelToDrawDuringAnimation = null // This global is set by the winwheel class to the wheel object to be re-drawn.
 
-function winwheelStopAnimation(canCallback) {
+function winwheelStopAnimation(id,canCallback) {
 	// When the animation is stopped if canCallback is not false then try to call the callback.
 	// false can be passed in to stop the after happening if the animation has been stopped before it ended normally.
 	if (canCallback != false) {
-		var callback = winwheelToDrawDuringAnimation.animation.callbackFinished
+		var callback = wheels[id].animation.callbackFinished
 
 		if (callback != null) {
 			// If the callback is a function then call it, otherwise evaluate the property as javascript code.
 			if (typeof callback === 'function') {
 				// Pass back the indicated segment as 99% of the time you will want to know this to inform the user of their prize.
-				callback(winwheelToDrawDuringAnimation.getIndicatedSegment())
+				callback(wheels[id].getIndicatedSegment())
 			} else {
 				eval(callback)
 			}
