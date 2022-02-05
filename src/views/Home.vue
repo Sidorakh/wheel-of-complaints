@@ -80,10 +80,9 @@
 
 <script>
     // @ is an alias to /src
-    import FortuneWheel from 'vue-fortune-wheel';
-    import 'vue-fortune-wheel/lib/vue-fortune-wheel.css';
 
     import VueWinwheel from '@/components/vue-winwheel';
+    import data from '../wheel-data.js';
 
     const palette = [
         //"#383F51",
@@ -95,60 +94,9 @@
         "#CC001B",
         "#388D16",
     ];
-    const entities = [
-        "The AEC",
-        "Leonardo Puglisi",
-        "Dan Andrews",
-        "The ABC",
-        "The Greens party",
-        "The Labor party",
-        "The Guardian",
-        "Pfizer",
-        "Moderna",
-        "AstraZeneca",
-        "The Unofficial Chaser Discord Server",
-        "The Great Mouse Plague of 2021",
-        "The Chaser",
-        "The Shovel",
-        "The Betoota Advocate",
-        "Antony Green",
-    ];
-    const problems = [
-        "right wing",
-        "problematic",
-        "a liberal front",
-        "run by a Lib/Nat staffer",
-        "generally crap",
-        "even worse than the LNP",
-        "not even slightly impartial",
-        "a front for Nazis",
-        "perpetuating cancel culture",
-        "spreading fake news",
-    ];
-    const reasons = [
-        "I'm secretly a Nazi",
-        "they criticised Labor",
-        "they criticised Albo",
-        "PRGuy said so",
-        "my friend's cousins ballsack tripled in size",
-        "they're pink",
-        "they steal votes from Labor",
-        "they dared remind us that preferential voting exists",
-        "they're a loaf of milk",
-        "a fact check hurt my fee fees",
-        "the UAP showed me the truth",
-        "the frogs turned gay",
-        "they need to smile more",
-        "we don't have free RATs",
-        "they defamed me on Twitter",
-        "I couldn't purchase soft serve today",
-        "I sent a spicy text message",
-        "the milkshake did not consent",
-        "they went woke",
-        "they fondled a lump of coal",
-        "they texted me like a cringy ex",
-        "they are a Rupert Murdoch simp",
-    ];
+    const entities = data.get_entities(12);
+    const problems = data.get_problems(12);
+    const reasons = data.get_reasons(12);
     function generate_prize_list(array) {
         let prizes = []
         for (let i=0;i<array.length;i++) {
@@ -169,7 +117,6 @@
     export default {
         name: 'Home',
         components: {
-            FortuneWheel,
             VueWinwheel,
         },
         data:()=>({
