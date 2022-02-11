@@ -111,10 +111,10 @@
                 const position_entity = 300*target_entity;
                 const slot_entity = this.$refs.scroller_entities.$el;
                 const target_problem = Math.floor(Math.random()*problems.length)+problems.length*spins;
-                const position_problem = 300*target_entity;
+                const position_problem = 300*target_problem;
                 const slot_problem = this.$refs.scroller_problems.$el;
                 const target_reason = Math.floor(Math.random()*reasons.length)+reasons.length*spins;
-                const position_reason = 300*target_entity;
+                const position_reason = 300*target_reason;
                 const slot_reason = this.$refs.scroller_reasons.$el;
                 slot_entity.classList.add('blur');
                 slot_problem.classList.add('blur');
