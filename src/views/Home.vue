@@ -31,50 +31,53 @@
                 <v-btn @click="spin_entities();spin_problems();spin_reasons();"> Spin all! </v-btn>
             </v-col>
         </v-row>
-        <div v-if="show_complaint" align="center" class="text-h2 px-4">
-            {{complaint_text}}
-            <v-tooltip top>
-                <template v-slot:activator="{on,attrs}">
-                    <v-btn icon @click="show_share_dialog=true" v-bind="attrs" v-on="on"> <v-icon> mdi-share </v-icon> </v-btn>
-                </template>
-                <span> Share </span>
-            </v-tooltip>
-        </div>
-        <v-snackbar v-model="show_notification" :timeout="5000">
-            {{notification_text}}
-        </v-snackbar>
-        <v-dialog v-model="show_share_dialog" max-width="600">
-            <v-card>
-                <v-card-title>
-                    Share this hot take?
-                </v-card-title>
-                <v-card-text>
-                    {{complaint_text}}
-                </v-card-text>
-                <v-card-actions>
-                    <v-tooltip top>
-                        <template v-slot:activator="{on,attrs}">
-                            <v-btn @click="copy_complaint" icon target="_blank">
-                                <v-icon> mdi-content-copy </v-icon>
-                            </v-btn>
-                        </template>
-                        <span>
-                            Copy to Clipboard
-                        </span>
-                    </v-tooltip>
-                    <v-tooltip top>
-                        <template v-slot:activator="{on,attrs}">
-                            <v-btn :href="`https://twitter.com/intent/tweet?text=${encodeURIComponent(complaint_text + '\nCreate your own lies at ')}&url=${encodeURIComponent('https://political-spin.netlify.app/')}`" icon target="_blank">
-                                <v-icon> mdi-twitter </v-icon>
-                            </v-btn>
-                        </template>
-                        <span>
-                            Tweet this
-                        </span>
-                    </v-tooltip>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <share-dialog :message="complaint_text" :show_complaint="show_complaint"/>
+        <!--
+            <div v-if="show_complaint" align="center" class="text-h2 px-4">
+                {{complaint_text}}
+                <v-tooltip top>
+                    <template v-slot:activator="{on,attrs}">
+                        <v-btn icon @click="show_share_dialog=true" v-bind="attrs" v-on="on"> <v-icon> mdi-share </v-icon> </v-btn>
+                    </template>
+                    <span> Share </span>
+                </v-tooltip>
+            </div>
+            <v-snackbar v-model="show_notification" :timeout="5000">
+                {{notification_text}}
+            </v-snackbar>
+            <v-dialog v-model="show_share_dialog" max-width="600">
+                <v-card>
+                    <v-card-title>
+                        Share this hot take?
+                    </v-card-title>
+                    <v-card-text>
+                        {{complaint_text}}
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-tooltip top>
+                            <template v-slot:activator="{on,attrs}">
+                                <v-btn @click="copy_complaint" icon target="_blank">
+                                    <v-icon> mdi-content-copy </v-icon>
+                                </v-btn>
+                            </template>
+                            <span>
+                                Copy to Clipboard
+                            </span>
+                        </v-tooltip>
+                        <v-tooltip top>
+                            <template v-slot:activator="{on,attrs}">
+                                <v-btn :href="`https://twitter.com/intent/tweet?text=${encodeURIComponent(complaint_text + '\nCreate your own lies at ')}&url=${encodeURIComponent('https://political-spin.netlify.app/')}`" icon target="_blank">
+                                    <v-icon> mdi-twitter </v-icon>
+                                </v-btn>
+                            </template>
+                            <span>
+                                Tweet this
+                            </span>
+                        </v-tooltip>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        -->
     </div>
 </template>
 
@@ -82,6 +85,7 @@
     // @ is an alias to /src
 
     import VueWinwheel from '@/components/vue-winwheel';
+    import ShareDialog from '../components/ShareDialog.vue';
     import data from '../wheel-data.js';
 
     const palette = [
@@ -118,6 +122,7 @@
         name: 'Home',
         components: {
             VueWinwheel,
+            ShareDialog,
         },
         data:()=>({
             show_share_dialog:false,

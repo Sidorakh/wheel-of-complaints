@@ -5,10 +5,19 @@
                 <v-img alt="Vuetify Logo" class="shrink mr-2" contain src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png" transition="scale-transition" width="40"/>
                 <span class="text-h4"> Political Spin! </span>
             </div>
-            <v-spacer></v-spacer>
         </v-app-bar>
-
         <v-main>
+            <v-row>
+                <v-col class="text-center">
+                    <router-link to="/"> Spinners </router-link>
+                </v-col>
+                <v-col class="text-center">
+                    <router-link to="/slots"> Slots </router-link>
+                </v-col>
+                <v-col class="text-center">
+                    <router-link to="/about"> About </router-link>
+                </v-col>
+            </v-row>
             <router-view/>
         </v-main>
     </v-app>
