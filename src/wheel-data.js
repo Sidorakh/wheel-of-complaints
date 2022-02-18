@@ -30,13 +30,16 @@ const problems = [
     "spreading fake news",
     "a right wing nutjob",
     "a secret supporter of Pauline Hansons One Nation",
-    "a rabit antivaxxer",
+    "a rabid antivaxxer",
     "the cause of Pizzagate",
     "a corporate shill",
     "a shill for the Coalition",
     "a crisis actor",
     "the founder of ANTIFA",
     "a far left plant",
+    "a front for Big Ukelele",
+    "worse than Satan himself",
+
 ];
 
 const reasons = [
@@ -70,6 +73,7 @@ const reasons = [
     "they support unpublishing sexist books",
     "they researched facts before writing a tweet",
     "they're actually 3 lib staffers in a trench coat",
+    "because we don't directly vote for the prime minister",
 ];
 
 function array_sample(array,num) {

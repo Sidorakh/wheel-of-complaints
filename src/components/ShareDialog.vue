@@ -20,7 +20,7 @@
                 <v-card-actions>
                     <v-tooltip top>
                         <template v-slot:activator="{on,attrs}">
-                            <v-btn @click="copy_complaint" icon target="_blank">
+                            <v-btn v-bind="attrs" v-on="on" @click="copy_complaint" icon target="_blank">
                                 <v-icon> mdi-content-copy </v-icon>
                             </v-btn>
                         </template>
@@ -30,12 +30,22 @@
                     </v-tooltip>
                     <v-tooltip top>
                         <template v-slot:activator="{on,attrs}">
-                            <v-btn :href="`https://twitter.com/intent/tweet?text=${encodeURIComponent(complaint_text + '\nCreate your own lies at ')}&url=${encodeURIComponent('https://political-spin.netlify.app/')}`" icon target="_blank">
+                            <v-btn v-bind="attrs" v-on="on" :href="`https://twitter.com/intent/tweet?text=${encodeURIComponent(complaint_text())}`" icon target="_blank">
                                 <v-icon> mdi-twitter </v-icon>
                             </v-btn>
                         </template>
                         <span>
                             Tweet this
+                        </span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                        <template v-slot:activator="{on,attrs}">
+                            <v-btn v-bind="attrs" v-on="on" icon @click="facebook_share">
+                                <v-icon> mdi-facebook </v-icon>
+                            </v-btn>
+                        </template>
+                        <span>
+                            Share this on Facebook
                         </span>
                     </v-tooltip>
                 </v-card-actions>
@@ -62,10 +72,18 @@
         },
         data:()=>({
             show_basic_share_dialog: false,
-            notiication_text:'',
+            notification_text:'',
             show_notification:false,
         }),
         methods: {
+            facebook_share() {
+                const share_url = `https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fpolitical-spin.netlify.app&title=Political%20Spin&quote=${this.complaint_text()}`;
+                // const share_url = `https://www.facebook.com/dialog/feed?&app_id=1209310536142969&link=https%3A%2F%2Fpolitical-spin.netlify.app&display=popup&quote=${this.complaint_text()}`;
+                window.open(share_url,'_blank','menubar=no,width=500,height=500')
+            },
+            complaint_text(){
+                return '"' + this.message + '". ' + '\nCreate your own lies at https://political-spin.netlify.app';
+            },
             async open_share_dialog(){
                 // if ('share' in navigator) {
                 //     await navigator.share({
@@ -78,7 +96,7 @@
             },
             async copy_complaint() {
                 try {
-                    await navigator.clipboard.writeText(this.message + '\nCreate your own lies at https://political-spin.netlify.app');// + '\nCreate your own lies at https://political-spin.netlify.app/');
+                    await navigator.clipboard.writeText(this.complaint_text());// + '\nCreate your own lies at https://political-spin.netlify.app/');
                     this.show_notification = true;
                     this.notification_text = 'Copied to clipboard!';
                 } catch(e) {
