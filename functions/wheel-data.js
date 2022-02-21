@@ -1,4 +1,4 @@
-import {entities,problems,reasons} from './raw-data.json';
+const {entities,problems,reasons} = require('../src/raw-data.json');
 
 function array_sample(array,num) {
     const items = [...array].map(v=>({v,r:Math.random()})).sort((a,b)=>a.r-b.r);
@@ -20,8 +20,9 @@ function get_reasons(num=-1) {
     return array_sample(reasons,num);
 }
 
-export default {
+module.exports =  {
     get_entities,
     get_problems,
     get_reasons,
+    entities,problems,reasons,
 }

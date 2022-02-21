@@ -82,7 +82,7 @@
                 window.open(share_url,'_blank','menubar=no,width=500,height=500')
             },
             complaint_text(){
-                return '"' + this.message + '". ' + '\nCreate your own lies at https://political-spin.netlify.app';
+                return '"' + this.message + '". ' + '\nSpin your own truth with https://political-spin.netlify.app';
             },
             async open_share_dialog(){
                 // if ('share' in navigator) {
