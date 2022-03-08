@@ -1,34 +1,36 @@
 <template>
     <div class="home" style="padding-top: 1em;">
-        <!--
-        <fortune-wheel style="width:800px" :canvas="canvas_options" :prizes="entities" :useWeight="true"/>
-        -->
+        <span class="d-sr-only"> This is an app that generates fake headlines from three chunks of political-related things. Each wheel can be spun indiviudally, or all at once. </span>
         <v-row>
             <v-col align="center">
-                <v-container class="width-100">
-                    <v-btn @click="spin_entities" color="primary"> Spin! </v-btn>
-                </v-container>
                 <vue-winwheel :segments="entities" :width="400" :height="400" :outer-radius="200" ref="entities" :canvasId="'winwheel-entities'" :font-size="10" :callback="cb_entity"/>
-                <div> {{complaint.entity}} </div>
+                <div> <span class="d-sr-only">Spin result #1: </span>{{complaint.entity}} </div>
+                <v-container class="width-100">
+                    <v-btn @click="spin_entities" color="primary"> Spin #1! </v-btn>
+                </v-container>
             </v-col>
             <v-col align="center">
-                <v-container class="width-100">
-                    <v-btn @click="spin_problems" color="primary"> Spin! </v-btn>
-                </v-container>
                 <vue-winwheel :segments="problems" :width="400" :height="400" :outer-radius="200" ref="problems" :canvasId="'winwheel-problems'" :font-size="10" :callback="cb_problem"/>
-                <div> {{complaint.problem}} </div>
+                <div> <span class="d-sr-only">Spin result #2: </span> {{complaint.problem}} </div>
+                <v-container class="width-100">
+                    <v-btn @click="spin_problems" color="primary"> Spin #2! </v-btn>
+                </v-container>
             </v-col>
             <v-col align="center">
-                <v-container class="width-100">
-                    <v-btn @click="spin_reasons" color="primary"> Spin! </v-btn>
-                </v-container>
                 <vue-winwheel :segments="reasons" :width="400" :height="400" :outer-radius="200" ref="reasons" :canvasId="'winwheel-reasons'" :font-size="10" :callback="cb_reason"/>
-                <div> {{complaint.reason}} </div>
+                <div> <span class="d-sr-only">Spin result #3: </span> {{complaint.reason}} </div>
+                <v-container class="width-100">
+                    <v-btn @click="spin_reasons" color="primary"> Spin #3! </v-btn>
+                </v-container>
             </v-col>
         </v-row>
         <v-row>
             <v-col align="center">
-                <v-btn @click="spin_entities();spin_problems();spin_reasons();"> Spin all! </v-btn>
+                <v-btn @click="spin_entities();spin_problems();spin_reasons();" color="primary" class="pa-8">
+                    <div class="text-h4">
+                        <b>Spin all!</b>
+                    </div>
+                </v-btn>
             </v-col>
         </v-row>
         <share-dialog :message="complaint_text" :show_complaint="show_complaint"/>

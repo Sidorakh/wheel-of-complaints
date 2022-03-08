@@ -1,13 +1,50 @@
 <template>
     <v-container>
         <div v-if="show_complaint" class="text-h2" align="center">
-            {{message}} 
+            <div>
+                <span class="d-sr-only">Result: </span>{{message}} 
+            </div>
+            <v-tooltip top>
+                <template v-slot:activator="{on,attrs}">
+                    <v-btn v-bind="attrs" v-on="on" @click="copy_complaint" icon target="_blank">
+                        <v-icon> mdi-content-copy </v-icon>
+                        <span class="d-sr-only"> Copy to Clipboard </span>
+                    </v-btn>
+                </template>
+                <span>
+                    Copy to Clipboard
+                </span>
+            </v-tooltip>
+            <v-tooltip top>
+                <template v-slot:activator="{on,attrs}">
+                    <v-btn v-bind="attrs" v-on="on" :href="`https://twitter.com/intent/tweet?text=${encodeURIComponent(complaint_text())}`" icon target="_blank">
+                        <v-icon> mdi-twitter </v-icon>
+                        <span class="d-sr-only"> Tweet this </span>
+                    </v-btn>
+                </template>
+                <span>
+                    Tweet this
+                </span>
+            </v-tooltip>
+            <v-tooltip top>
+                <template v-slot:activator="{on,attrs}">
+                    <v-btn v-bind="attrs" v-on="on" icon @click="facebook_share">
+                        <v-icon> mdi-facebook </v-icon>
+                        <span class="d-sr-only"> Share this on Facebook </span>
+                    </v-btn>
+                </template>
+                <span>
+                    Share this on Facebook
+                </span>
+            </v-tooltip>
+            <!--
             <v-tooltip top>
                 <template v-slot:activator="{on,attrs}">
                     <v-btn icon @click="open_share_dialog" v-bind="attrs" v-on="on"> <v-icon> mdi-share </v-icon> </v-btn>
                 </template>
                 <span> Share </span>
             </v-tooltip>
+            -->
         </div>
         <v-dialog v-model="show_basic_share_dialog" max-width="600">
             <v-card>
@@ -82,7 +119,7 @@
                 window.open(share_url,'_blank','menubar=no,width=500,height=500')
             },
             complaint_text(){
-                return '"' + this.message + '". ' + '\nSpin your own truth with https://political-spin.netlify.app';
+                return '"' + this.message + '". ' + '\n\nSpin your own truth with https://political-spin.netlify.app';
             },
             async open_share_dialog(){
                 // if ('share' in navigator) {

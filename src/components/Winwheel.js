@@ -688,6 +688,10 @@ export class Winwheel {
 					}
 
 					for (var i = 0; i < lines.length; i++) {
+						let line = lines[i].slice(0,30);
+						if (line.length != lines[i].length) {
+							line += '...';
+						}
 						// ---------------------------------
 						// If direction is reversed then do things differently than if normal (which is the default - see further down)
 						if (direction == 'reversed') {
@@ -711,20 +715,19 @@ export class Winwheel {
 								this.ctx.translate(this.centerX, this.centerY)
 								this.ctx.rotate(textAngle)
 								this.ctx.translate(-this.centerX, -this.centerY)
-
 								if (alignment == 'inner') {
 									// In reversed state the margin is subtracted from the innerX.
 									// When inner the inner radius also comes in to play.
 									if (fillStyle)
 										this.ctx.fillText(
-											lines[i],
+											line,
 											this.centerX - this.innerRadius - margin,
 											this.centerY + lineOffset
 										)
 
 									if (strokeStyle)
 										this.ctx.strokeText(
-											lines[i],
+											line,
 											this.centerX - this.innerRadius - margin,
 											this.centerY + lineOffset
 										)
@@ -732,14 +735,14 @@ export class Winwheel {
 									// In reversed state the position is the center minus the radius + the margin for outer aligned text.
 									if (fillStyle)
 										this.ctx.fillText(
-											lines[i],
+											line,
 											this.centerX - this.outerRadius + margin,
 											this.centerY + lineOffset
 										)
 
 									if (strokeStyle)
 										this.ctx.strokeText(
-											lines[i],
+											line,
 											this.centerX - this.outerRadius + margin,
 											this.centerY + lineOffset
 										)
@@ -747,7 +750,7 @@ export class Winwheel {
 									// In reversed state the everything in minused.
 									if (fillStyle)
 										this.ctx.fillText(
-											lines[i],
+											line,
 											this.centerX -
 												this.innerRadius -
 												(this.outerRadius - this.innerRadius) / 2 -
@@ -757,7 +760,7 @@ export class Winwheel {
 
 									if (strokeStyle)
 										this.ctx.strokeText(
-											lines[i],
+											line,
 											this.centerX -
 												this.innerRadius -
 												(this.outerRadius - this.innerRadius) / 2 -
@@ -793,8 +796,8 @@ export class Winwheel {
 								// Loop though and output the characters.
 								if (alignment == 'outer') {
 									// In reversed mode outer means text in 6 o'clock segment sits at bottom of the wheel and we draw up.
-									for (var c = lines[i].length - 1; c >= 0; c--) {
-										character = lines[i].charAt(c)
+									for (var c = line.length - 1; c >= 0; c--) {
+										character = line.charAt(c)
 
 										if (fillStyle) this.ctx.fillText(character, this.centerX + lineOffset, yPos)
 
@@ -804,8 +807,8 @@ export class Winwheel {
 									}
 								} else if (alignment == 'inner') {
 									// In reversed mode inner text is drawn from top of segment at 6 o'clock position to bottom of the wheel.
-									for (var c = 0; c < lines[i].length; c++) {
-										character = lines[i].charAt(c)
+									for (var c = 0; c < line.length; c++) {
+										character = line.charAt(c)
 
 										if (fillStyle) this.ctx.fillText(character, this.centerX + lineOffset, yPos)
 
@@ -819,8 +822,8 @@ export class Winwheel {
 									// What we are aiming for is to position the center of the text at the center point between the inner and outer radius.
 									var centerAdjustment = 0
 
-									if (lines[i].length > 1) {
-										centerAdjustment = (yInc * (lines[i].length - 1)) / 2
+									if (line.length > 1) {
+										centerAdjustment = (yInc * (line.length - 1)) / 2
 									}
 
 									var yPos =
@@ -830,8 +833,8 @@ export class Winwheel {
 										centerAdjustment +
 										margin
 
-									for (var c = lines[i].length - 1; c >= 0; c--) {
-										character = lines[i].charAt(c)
+									for (var c = line.length - 1; c >= 0; c--) {
+										character = line.charAt(c)
 
 										if (fillStyle) this.ctx.fillText(character, this.centerX + lineOffset, yPos)
 
@@ -873,7 +876,7 @@ export class Winwheel {
 								var drawAngle = 0
 
 								// If more than one character in the text then...
-								if (lines[i].length > 1) {
+								if (line.length > 1) {
 									// Text is drawn from the left.
 									this.ctx.textAlign = 'left'
 
@@ -893,7 +896,7 @@ export class Winwheel {
 									// Next we want the text to be drawn in the middle of the segment, without this it would start at the beginning of the segment.
 									// To do this we need to work out how much arc the text will take up in total then subtract half of this from the center
 									// of the segment so that it sits centred.
-									totalArc = anglePerChar * lines[i].length
+									totalArc = anglePerChar * line.length
 
 									// Now set initial draw angle to half way between the start and end of the segment.
 									drawAngle = seg.startAngle + ((seg.endAngle - seg.startAngle) / 2 - totalArc / 2)
@@ -916,10 +919,10 @@ export class Winwheel {
 								// ----------------------
 								// Now the drawing itself.
 								// In reversed direction mode we loop through the characters in the text backwards in order for them to appear on screen correctly
-								for (c = lines[i].length; c >= 0; c--) {
+								for (c = line.length; c >= 0; c--) {
 									this.ctx.save()
 
-									character = lines[i].charAt(c)
+									character = line.charAt(c)
 
 									// Rotate the wheel to the draw angle as we need to add the character at this location.
 									this.ctx.translate(this.centerX, this.centerY)
@@ -980,7 +983,7 @@ export class Winwheel {
 									// If fillstyle is set the draw the text filled in.
 									if (fillStyle)
 										this.ctx.fillText(
-											lines[i],
+											line,
 											this.centerX + this.innerRadius + margin,
 											this.centerY + lineOffset
 										)
@@ -988,7 +991,7 @@ export class Winwheel {
 									// If stroke style is set draw the text outline.
 									if (strokeStyle)
 										this.ctx.strokeText(
-											lines[i],
+											line,
 											this.centerX + this.innerRadius + margin,
 											this.centerY + lineOffset
 										)
@@ -1001,7 +1004,7 @@ export class Winwheel {
 									// come first when drawing outer, rather than second when doing inner.
 									if (fillStyle)
 										this.ctx.fillText(
-											lines[i],
+											line,
 											this.centerX + this.outerRadius - margin,
 											this.centerY + lineOffset
 										)
@@ -1009,7 +1012,7 @@ export class Winwheel {
 									// If fillstyle the fill the text.
 									if (strokeStyle)
 										this.ctx.strokeText(
-											lines[i],
+											line,
 											this.centerX + this.outerRadius - margin,
 											this.centerY + lineOffset
 										)
@@ -1022,7 +1025,7 @@ export class Winwheel {
 									// If stoke style the stroke the text.
 									if (fillStyle)
 										this.ctx.fillText(
-											lines[i],
+											line,
 											this.centerX +
 												this.innerRadius +
 												(this.outerRadius - this.innerRadius) / 2 +
@@ -1033,7 +1036,7 @@ export class Winwheel {
 									// If fillstyle the fill the text.
 									if (strokeStyle)
 										this.ctx.strokeText(
-											lines[i],
+											line,
 											this.centerX +
 												this.innerRadius +
 												(this.outerRadius - this.innerRadius) / 2 +
@@ -1083,8 +1086,8 @@ export class Winwheel {
 								if (alignment == 'outer') {
 									// For this alignment we draw down from the top of a segment at the 12 o'clock position to simply
 									// loop though the characters in order.
-									for (var c = 0; c < lines[i].length; c++) {
-										character = lines[i].charAt(c)
+									for (var c = 0; c < line.length; c++) {
+										character = line.charAt(c)
 
 										if (fillStyle) this.ctx.fillText(character, this.centerX + lineOffset, yPos)
 
@@ -1095,8 +1098,8 @@ export class Winwheel {
 								} else if (alignment == 'inner') {
 									// Here we draw from the inner of the wheel up, but in order for the letters in the text text to
 									// remain in the correct order when reading, we actually need to loop though the text characters backwards.
-									for (var c = lines[i].length - 1; c >= 0; c--) {
-										character = lines[i].charAt(c)
+									for (var c = line.length - 1; c >= 0; c--) {
+										character = line.charAt(c)
 
 										if (fillStyle) this.ctx.fillText(character, this.centerX + lineOffset, yPos)
 
@@ -1114,8 +1117,8 @@ export class Winwheel {
 									// What we are aiming for is to position the center of the text at the center point between the inner and outer radius.
 									var centerAdjustment = 0
 
-									if (lines[i].length > 1) {
-										centerAdjustment = (yInc * (lines[i].length - 1)) / 2
+									if (line.length > 1) {
+										centerAdjustment = (yInc * (line.length - 1)) / 2
 									}
 
 									// Now work out where to start rendering the string. This is half way between the inner and outer of the wheel, with the
@@ -1129,8 +1132,8 @@ export class Winwheel {
 										margin
 
 									// Now loop and draw just like outer text rendering.
-									for (var c = 0; c < lines[i].length; c++) {
-										character = lines[i].charAt(c)
+									for (var c = 0; c < line.length; c++) {
+										character = line.charAt(c)
 
 										if (fillStyle) this.ctx.fillText(character, this.centerX + lineOffset, yPos)
 
@@ -1172,7 +1175,7 @@ export class Winwheel {
 								var drawAngle = 0
 
 								// If more than one character in the text then...
-								if (lines[i].length > 1) {
+								if (line.length > 1) {
 									// Text is drawn from the left.
 									this.ctx.textAlign = 'left'
 
@@ -1192,7 +1195,7 @@ export class Winwheel {
 									// Next we want the text to be drawn in the middle of the segment, without this it would start at the beginning of the segment.
 									// To do this we need to work out how much arc the text will take up in total then subtract half of this from the center
 									// of the segment so that it sits centred.
-									totalArc = anglePerChar * lines[i].length
+									totalArc = anglePerChar * line.length
 
 									// Now set initial draw angle to half way between the start and end of the segment.
 									drawAngle = seg.startAngle + ((seg.endAngle - seg.startAngle) / 2 - totalArc / 2)
@@ -1211,10 +1214,10 @@ export class Winwheel {
 								// ----------------------
 								// Now the drawing itself.
 								// Loop for each character in the text.
-								for (c = 0; c < lines[i].length; c++) {
+								for (c = 0; c < line.length; c++) {
 									this.ctx.save()
 
-									character = lines[i].charAt(c)
+									character = line.charAt(c)
 
 									// Rotate the wheel to the draw angle as we need to add the character at this location.
 									this.ctx.translate(this.centerX, this.centerY)

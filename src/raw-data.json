@@ -4,6 +4,7 @@
         "Leonardo Puglisi",
         "Dan Andrews",
         "The ABC",
+        "SBS",
         "The Greens party",
         "The Labor party",
         "The Guardian",
@@ -15,9 +16,14 @@
         "The Chaser",
         "The Shovel",
         "The Betoota Advocate",
-        "Antony Green"
+        "Antony Green",
+        "Charles Firth",
+        "John Delmenico",
+        "James Schloeffel",
+        "Dan Ilic",
+        "Peter Dutton",
+        "The Chaser Intern Union"
     ],
-
     "problems": [
         "right wing",
         "problematic",
@@ -30,7 +36,7 @@
         "perpetuating cancel culture",
         "spreading fake news",
         "a right wing nutjob",
-        "a secret supporter of Pauline Hansons One Nation",
+        "a secret supporter of Pauline Hanson's One Nation",
         "a rabid antivaxxer",
         "the cause of Pizzagate",
         "a corporate shill",
@@ -40,7 +46,11 @@
         "a far left plant",
         "a front for Big Ukelele",
         "worse than Satan himself",
-        "simply unprofessional"
+        "simply unprofessional",
+        "a supporter of non-binary candy",
+        "proof that the election process is broken",
+        "a supporter of \"Personal Responsibility\" for managing a raging pandemic",
+        "a supporter of Soft-Serve Gate"
     ],
     "reasons": [
         "I'm secretly a Nazi",
@@ -76,6 +86,35 @@
         "because we don't directly vote for the prime minister",
         "they spoke to PHON in the Asian language",
         "they dared call out sexist bullshit",
-        "they know how to use a welding helmet"
+        "they know how to use a welding helmet",
+        "my candidate didn't win the election",
+        "they tried to name their own scandal",
+        "they used disaster payments instead of a GoFundMe",
+        "it's a matter for the states",
+        "it's not a shutdown, it's really a strike",
+        "they won't take my opponents election posters down",
+        "they required 3 ambulances for their welding \"accident\"",
+        "they want to protect trans kids",
+        "they're a Tinder spy",
+        "they took responsibility, not a photo",
+        "they tagged Porn Albo instead of Women's Weekly Hot Albo"
+    ],
+    "taglines":[
+        "I legit thought it was a real headline",
+        "When your own takes aren't BS enough",
+        "Because #AusPol is this unbelievable",
+        "Have we found Scotty yet?",
+        "Where the bloody hell are we anyway?",
+        "Rated #1 by Sky News Journalists on a deadline",
+        "Which 14 year old are we ganging up on today?",
+        "When you need a distraction from your latest gaff",
+        "Spinner? Hardly knew 'er!",
+        "Meet Spinny, your new best friend",
+        "When the rubbles run out & you're short on material",
+        "Asimov disapproved",
+        "Sounding too close to real is kinda the point",
+        "Fake headlines so believable it's depressing!",
+        "I can't believe its not real news",
+        "It's not a shutdown, it's really a strike"
     ]
 }

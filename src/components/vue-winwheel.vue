@@ -1,9 +1,9 @@
 <template>
 		<section class="vue-winwheel">
 			<div class="mobile-container">
-				<div class="wheel-wrapper">
+				<div class="wheel-wrapper" @click="startSpin">
 					<div class="canvas-wrapper">
-						<canvas :id="canvasId" :width="width" :height="height">
+						<canvas :id="canvasId" :width="width" :height="height" aria-hidden="true">
 							<p>Sorry, your browser doesn't support canvases. Please try a browser released in the last ten years.</p>
 						</canvas>
 					</div>
@@ -93,8 +93,8 @@ export default {
 			innerRadius: 25,
 			lineWidth: 8,
 			animation: {
-			type: 'spinOngoing',
-			duration: 0.5
+				type: 'spinOngoing',
+				duration: 0.5
 			}
 		}
     }
@@ -182,6 +182,10 @@ export default {
 </script>
 
 <style scoped>
+.canvas-wrapper {
+	border-radius:50%;
+	cursor: pointer;
+}
 .vue-winwheel {
 	text-align: center;
 	background-image: url('/static/img/obstacle-run/bg-spinner-mobile.svg');
