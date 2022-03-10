@@ -17,7 +17,7 @@
             </v-tooltip>
             <v-tooltip top>
                 <template v-slot:activator="{on,attrs}">
-                    <v-btn v-bind="attrs" v-on="on" :href="`https://twitter.com/intent/tweet?text=${encodeURIComponent(complaint_text())}`" icon target="_blank">
+                    <v-btn v-bind="attrs" v-on="on" @click="twitter_share" icon target="_blank">
                         <v-icon> mdi-twitter </v-icon>
                         <span class="d-sr-only"> Tweet this </span>
                     </v-btn>
@@ -67,7 +67,7 @@
                     </v-tooltip>
                     <v-tooltip top>
                         <template v-slot:activator="{on,attrs}">
-                            <v-btn v-bind="attrs" v-on="on" :href="`https://twitter.com/intent/tweet?text=${encodeURIComponent(complaint_text())}`" icon target="_blank">
+                            <v-btn v-bind="attrs" v-on="on" icon target="_blank" @click="twitter_share">
                                 <v-icon> mdi-twitter </v-icon>
                             </v-btn>
                         </template>
@@ -95,6 +95,7 @@
 </template>
 
 <script>
+    import analytics from '../analytics';
     export default {
         name: 'ShareDialog',
         props: {
@@ -113,8 +114,13 @@
             show_notification:false,
         }),
         methods: {
+            twitter_share() {
+                analytics.record_share('twitter');
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(this.complaint_text())}&hashtags=auspolspin`,'_blank');
+            },
             facebook_share() {
-                const share_url = `https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fpolitical-spin.netlify.app&title=Political%20Spin&quote=${this.complaint_text()}`;
+                analytics.record_share('facebook');
+                const share_url = `https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fpolitical-spin.netlify.app&title=Political%20Spin&quote=${this.complaint_text()}&hashtag=%23auspolspin`;
                 // const share_url = `https://www.facebook.com/dialog/feed?&app_id=1209310536142969&link=https%3A%2F%2Fpolitical-spin.netlify.app&display=popup&quote=${this.complaint_text()}`;
                 window.open(share_url,'_blank','menubar=no,width=500,height=500')
             },
@@ -132,6 +138,7 @@
                 // }
             },
             async copy_complaint() {
+                analytics.record_share('clipboard');
                 try {
                     await navigator.clipboard.writeText(this.complaint_text());// + '\nCreate your own lies at https://political-spin.netlify.app/');
                     this.show_notification = true;

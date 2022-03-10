@@ -36,6 +36,7 @@
 
 <script>
     import data from './wheel-data.js';
+    import analytics from './analytics.js';
     export default {
         name: 'App',
 
@@ -50,6 +51,7 @@
         methods: {
             set_tagline(){
                 this.tagline = this.taglines[Math.floor(Math.random()*this.taglines.length)];
+                analytics.header_clicked();
             },
         }
     };

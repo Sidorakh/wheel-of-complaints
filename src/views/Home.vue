@@ -89,6 +89,7 @@
     import VueWinwheel from '@/components/vue-winwheel';
     import ShareDialog from '../components/ShareDialog.vue';
     import data from '../wheel-data.js';
+    import analytics from '../analytics.js';
 
     const palette = [
         //"#383F51",
@@ -174,12 +175,15 @@
             },
             cb_entity(entity) {
                 this.complaint.entity = entity;
+                analytics.record_item(entity,'entities');
             },
             cb_problem(problem) {
                 this.complaint.problem = problem;
+                analytics.record_item(problem,'problems');
             },
             cb_reason(reason) {
                 this.complaint.reason = reason;
+                analytics.record_item(reason,'reasons');
             },
             show_share(){
                 this.show_share_dialog = true;
@@ -195,10 +199,6 @@
                     console.log(e);
                 }
             },
-            async share_facebook(){
-
-            }
-
         }
     }
 </script>
