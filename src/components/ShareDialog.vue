@@ -107,6 +107,14 @@
                 type: Boolean,
                 default: true,
             },
+            tagline: {
+                type: String,
+                default: 'Spin your own truth with {URL}'
+            },
+            url: {
+                type: String,
+                default: 'https://political-spin.netlify.app'
+            }
         },
         data:()=>({
             show_basic_share_dialog: false,
@@ -125,7 +133,7 @@
                 window.open(share_url,'_blank','menubar=no,width=500,height=500')
             },
             complaint_text(){
-                return '"' + this.message + '". ' + '\n\nSpin your own truth with https://political-spin.netlify.app';
+                return '"' + this.message + '". \n\n' + this.tagline.replace('{URL}',this.url);//'\n\nSpin your own truth with https://political-spin.netlify.app';
             },
             async open_share_dialog(){
                 // if ('share' in navigator) {

@@ -77,7 +77,16 @@ export default {
 		callback: {
 			type: [Function],
 			default: null,
-		}
+		},
+		wheel1: {
+			type: String,
+		},
+		wheel2: {
+			type: String,
+		},
+		wheel3: {
+			type: String,
+		},
   },
   data () {
     return {

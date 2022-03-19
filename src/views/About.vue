@@ -13,7 +13,7 @@
                     <v-col cols="6" md="4" :key="'testimonial-+i'">
                         <figure>
                             <blockquote>
-                                {{testimonial.quote}}
+                                &ldquo;{{testimonial.quote}}&rdquo;
                             </blockquote>
                             <figcaption>
                                 &mdash; {{testimonial.by}}
@@ -63,13 +63,18 @@
                     ]
                 },
                 {
+                    name: 'A piece of non-binary candy',
+                    for: 'Being the right kind of bad influence this project required',
+                    links:[],
+                },
+                {
                     name: 'Cowsy',
                     for: 'About half the ideas thanks to her otherwise mindless tractor squircles',
                     links: [],
                 },
                 {
                     name: 'Grae Hall',
-                    for: 'Helping me make this look less godawful',
+                    for: 'Helping make this look less godawful',
                     links: [
                         {
                             url: 'https://twitter.com/HallGrae',
