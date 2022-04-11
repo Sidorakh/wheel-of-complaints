@@ -20,7 +20,7 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <share-dialog :message="complaint_text" :show_complaint="show_complaint" tagline="Create some more excuses for Gabbi at {URL}"/>
+        <share-dialog :message="complaint_text" :show_complaint="show_complaint" tagline="Create some more excuses for Gabbi at {URL}" url="https://politicalspinner.com/#/sickie"/>
         <!--
             <div v-if="show_complaint" align="center" class="text-h2 px-4">
                 {{complaint_text}}

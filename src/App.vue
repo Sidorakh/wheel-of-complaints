@@ -36,7 +36,17 @@
         </v-main>
     </v-app>
 </template>
+<style>
+    @font-face {
+        font-family: 'Univers LT 47 CondensedLt';
+        src: url('/assets/UniversLT-CondensedBold.woff2') format('woff2'),
+            url('/assets/UniversLT-CondensedBold.woff') format('woff');
+        font-weight: bold;
+        font-style: normal;
+        font-display: swap;
+    }
 
+</style>
 <script>
     import data from './wheel-data.js';
     import analytics from './analytics.js';

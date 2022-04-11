@@ -1,9 +1,10 @@
 import data from './raw-data.json';
+import {analytics} from './firebase';
 import axios from 'axios';
 
 const enabled = !window.location.href.includes('localhost');
 
-const client = axios.create({baseURL: 'https://sidorakh.net/political-spin'});
+const client = axios.create();
 
 function item_to_index(item,type) {
     return data[type].findIndex(v=>v==item);
@@ -12,29 +13,22 @@ function item_to_index(item,type) {
 async function record_item(item,type) {
     if (!enabled) return;
     const index = item_to_index(item,type);
-    await client.post(`/item/${type}/${index}`);
+    //await client.post(`/api/item/${type}/${index}`);
+    analytics.logEvent(`record_${type}`,{index});
 }
 
 async function header_clicked() {
     if (!enabled) return;
-    await client.post(`/header-clicked`);
+    //await client.post(`/api/header-clicked`);
+    analytics.logEvent(`header_clicked`);
 }
 
 async function record_share(type) {
     if (!enabled) return;
-    await client.post(`/share/${type}`);
+    //await client.post(`/share/${type}`);
+    analytics.logEvent(`shared`,{type});
 
 }
-
-(async()=>{
-    if (!enabled) return;
-    if (window.localStorage.getItem('last_opened') == null) {
-        await client.post(`/hits/unique`);
-        window.localStorage.setItem('last_opened',Date.now());
-    } else {
-        await client.post(`/hits/all`);
-    }
-})();
 
 export default {
     record_item,

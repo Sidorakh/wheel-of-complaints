@@ -98,10 +98,13 @@
     import analytics from '../analytics';
     export default {
         name: 'ShareDialog',
+        created(){
+            console.log(this.$router);
+        },
         props: {
             message: {
                 type: String,
-                default: 'No message provided'
+                default: 'No message provided',
             },
             show_complaint: {
                 type: Boolean,
@@ -109,11 +112,11 @@
             },
             tagline: {
                 type: String,
-                default: 'Spin your own truth with {URL}'
+                default: 'Spin your own truth with {URL}',
             },
             url: {
                 type: String,
-                default: 'https://political-spin.netlify.app'
+                default: 'https://politicalspinner.com'
             }
         },
         data:()=>({

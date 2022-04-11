@@ -1,9 +1,9 @@
 <template>
     <div class="home" style="padding-top: 1em;">
         <v-container id="slot-container">
-            <v-row justify="center">
+            <v-row justify="center" style="overflow-x:hidden">
                 <v-col cols="4" class="text-center">
-                    <v-virtual-scroll :items="entities" :height="300" :itemHeight="300" class="scrollbar-hidden reel-item" :bench="2" ref="scroller_entities">
+                    <v-virtual-scroll :items="entities" :height="300" :itemHeight="300" :class="reel_classes()" :bench="2" ref="scroller_entities">
                         <template v-slot:default="{item}">
                             <v-list-item :key="item" class="justify-center" :height="300">
                                 <v-container class="fill-height align-center justify-center" style="height:300px;">
@@ -14,7 +14,7 @@
                     </v-virtual-scroll>
                 </v-col>
                 <v-col cols="4" class="text-center">
-                    <v-virtual-scroll :items="problems" :height="300" :itemHeight="300" class="scrollbar-hidden reel-item" :bench="2" ref="scroller_problems">
+                    <v-virtual-scroll :items="problems" :height="300" :itemHeight="300" :class="reel_classes()" :bench="2" ref="scroller_problems">
                         <template v-slot:default="{item}">
                             <v-list-item :key="item" class="justify-center" :height="300">
                                 <v-container class="fill-height align-center justify-center" style="height:300px;">
@@ -25,7 +25,7 @@
                     </v-virtual-scroll>
                 </v-col>
                 <v-col cols="4" class="text-center">
-                    <v-virtual-scroll :items="reasons" :height="300" :itemHeight="300" class="scrollbar-hidden reel-item" :bench="2" ref="scroller_reasons">
+                    <v-virtual-scroll :items="reasons" :height="300" :itemHeight="300" :class="reel_classes()" :bench="2" ref="scroller_reasons">
                         <template v-slot:default="{item}">
                             <v-list-item :key="item" class="justify-center" :height="300">
                                 <v-container class="fill-height align-center justify-center" style="height:300px;">
@@ -36,16 +36,15 @@
                     </v-virtual-scroll>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col cols="12" class="text-center">
-                    <v-btn @click="spin"> Spin! </v-btn>
-                </v-col>
-            </v-row>
+            <div id="lever" class="mx-auto mt-16" @click="spin" role="button">
+                <div id="stick" ref="stick" class=""/>
+                <div id="knob" ref="knob" class=""/>
+            </div>
         </v-container>
-        <share-dialog :message="complaint_text" :show_complaint="show_complaint"/>
+        <share-dialog :message="complaint_text" :show_complaint="show_complaint" url="https://politicalspinner.com/#/slots"/>
     </div>
 </template>
-<style scoped>
+<style>
     /* lets hide that scrollbar */
     .scrollbar-hidden::-webkit-scrollbar {
         display: none;
@@ -57,12 +56,74 @@
         scrollbar-width: none; /* Firefox */
     }
     .reel-item {
-        font-size:1em;
         padding:0;
-        border: 1px solid black;
+        border: 2px solid black;
+        box-shadow: inset 0 32px 24px -24px grey, inset 0 -32px 24px -24px grey;
+        font-family: 'Univers LT 47 CondensedLt'
+    }
+    .reel-item-large {
+        font-size: 3em;
+    }
+    .reel-item-mobile {
+        font-size: 1em;
     }
     .blur {
         filter: blur(1px);
+    }
+    #lever {
+        position:relative;
+        height:10em;
+        padding: 0;
+        width:4em;
+        cursor: pointer;
+    }
+    #knob {
+        position:absolute;
+        transform: translate(0,-2em);
+        width:4em;
+        height:4em;
+        background-color: red;
+        border-radius:50%;
+        z-index:1;
+    }
+    #stick {
+        position:absolute;
+        transform:translate(1.6em,0em);
+        margin: auto;
+        width:0.8em;
+        height: 8em;
+        background-color:grey;
+    }
+    .animate-knob {
+        animation: .5s 1 alternate yankknob;
+    }
+    .animate-stick {
+        animation: .5s 1 alternate yankstick;
+    }
+    @keyframes yankknob {
+        0% {
+        transform: translate(0,-2em);
+        }
+        50% {
+            transform: translate(0,3em);
+        }
+        100% {
+        transform: translate(0,-2em);
+        }
+    }
+    @keyframes yankstick {
+        0% {
+            height:8em;
+            transform: translate(1.6em,0em);
+        }
+        50% {
+            height:3em;
+            transform: translate(1.6em,5em);
+        }
+        100% {
+            height:8em;
+            transform: translate(1.6em,0em);
+        }
     }
 </style>
 <script>
@@ -73,7 +134,10 @@
     const entities = data.get_entities();
     const problems = data.get_problems();
     const reasons = data.get_reasons();
-
+    function get_animation(el,anim) {
+        const anims = el.getAnimations();
+        return anims.find((anim) => anim.animationName === anim);
+    }
     export default {
         name: 'Slots',
         components: {SlotWheel,ShareDialog},
@@ -101,7 +165,16 @@
             }
         },
         methods: {
+            reel_classes(){
+                if (this.$vuetify.breakpoint.mobile) {
+                    return 'scrollbar-hidden reel-item reel-item-mobile';
+                } else {
+                    return 'scrollbar-hidden reel-item reel-item-large';
+                }
+            },
             spin() {
+                this.$refs.stick.classList.add('animate','animate-stick');
+                this.$refs.knob.classList.add('animate','animate-knob');
                 if (this.interval != null) {
                     console.log('already running')
                     return;
@@ -128,7 +201,7 @@
                 }
                 this.interval = setInterval(()=>{
                     const spin_speed = 0.125;
-                    console.log(slot_entity.scrollTop);
+                    //console.log(slot_entity.scrollTop);
                     slot_entity.scrollTop = lerp(slot_entity.scrollTop,position_entity,spin_speed);
                     slot_problem.scrollTop = lerp(slot_problem.scrollTop,position_problem,spin_speed);
                     slot_reason.scrollTop = lerp(slot_reason.scrollTop,position_reason,spin_speed);
@@ -145,6 +218,8 @@
             },
             spin_end(){
                 console.log('spin end');
+                this.$refs.stick.classList.remove('animate','animate-stick');
+                this.$refs.knob.classList.remove('animate','animate-knob');
                 const slot_entity = this.$refs.scroller_entities.$el;
                 const slot_problem = this.$refs.scroller_problems.$el;
                 const slot_reason = this.$refs.scroller_reasons.$el;
@@ -171,7 +246,7 @@
         }
     }
     function lerp(a,b,t) {
-        console.log(a,b,t);
+        //console.log(a,b,t);
         return (a+(b-a)*t)
     }
 </script>
