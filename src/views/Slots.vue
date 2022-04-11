@@ -58,7 +58,7 @@
     .reel-item {
         padding:0;
         border: 2px solid black;
-        box-shadow: inset 0 32px 24px -24px grey, inset 0 -32px 24px -24px grey;
+        box-shadow: inset 0 32px 24px -24px #bbb, inset 0 -32px 24px -24px #bbb;
         font-family: 'Univers LT 47 CondensedLt'
     }
     .reel-item-large {
